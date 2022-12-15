@@ -1,0 +1,25 @@
+#!/bin/sh
+
+local_branch="$(git rev-parse --abbrev-ref HEAD)"
+regex="^main$|^(feature|bugfix|improvement|library|prerelease|release|hotfix)\/[a-z0-9._-]+$"
+if [[ ! $local_branch =~ $regex ]]
+then
+    echo "The branch name must respect the format regex: $regex"
+    exit 1
+fi
+
+echo "RUN CI"
+npm ci
+
+echo "RUN BUILD"
+npm run build
+
+echo "RUN TEST"
+npm run test
+
+echo "RUN LINT"
+npm run test
+
+
+
+exit 0
